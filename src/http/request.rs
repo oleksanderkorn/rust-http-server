@@ -5,13 +5,14 @@ use std::{
     str::{from_utf8, Utf8Error},
 };
 
+#[derive(Debug)]
 pub struct Request<'buf> {
     pub path: &'buf str,
     pub query_string: Option<QueryString<'buf>>,
     pub method: Method,
 }
 
-impl<'buf> TryFrom<&'buf Vec<u8>> for Request<'buf> {
+impl<'buf> TryFrom<&'buf [u8]> for Request<'buf> {
     type Error = ParseError;
 
     /*
@@ -19,7 +20,7 @@ impl<'buf> TryFrom<&'buf Vec<u8>> for Request<'buf> {
      * HEADERS \r\n
      * BODY
      */
-    fn try_from(buf: &'buf Vec<u8>) -> Result<Self, Self::Error> {
+    fn try_from(buf: &'buf [u8]) -> Result<Self, Self::Error> {
         let request = from_utf8(buf).or(Err(ParseError::InvalidEncoding))?;
 
         let (method, request) = get_next_word(request).ok_or(ParseError::InvalidRequest)?;

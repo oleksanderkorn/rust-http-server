@@ -1,4 +1,9 @@
-#![allow(dead_code, unused_imports, clippy::enum_variant_names)]
+#![allow(
+    dead_code,
+    unused_imports,
+    clippy::enum_variant_names,
+    clippy::unused_io_amount
+)]
 
 use server::Server;
 
