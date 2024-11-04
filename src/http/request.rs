@@ -7,9 +7,23 @@ use std::{
 
 #[derive(Debug)]
 pub struct Request<'buf> {
-    pub path: &'buf str,
-    pub query_string: Option<QueryString<'buf>>,
-    pub method: Method,
+    path: &'buf str,
+    query_string: Option<QueryString<'buf>>,
+    method: Method,
+}
+
+impl<'buf> Request<'buf> {
+    pub fn path(&self) -> &str {
+        self.path
+    }
+
+    pub fn method(&self) -> &Method {
+        &self.method
+    }
+
+    pub fn query_string(&self) -> Option<&QueryString<'buf>> {
+        self.query_string.as_ref()
+    }
 }
 
 impl<'buf> TryFrom<&'buf [u8]> for Request<'buf> {
